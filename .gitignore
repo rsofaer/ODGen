@@ -2,12 +2,14 @@
 /package-lock.json
 .testDB/
 .vscode/
+.idea/
 tmp_env/
 testreport/
 /tmp/
 run_tmp/
 TAJS/
 /net_env_dir
+venv
 
 # package download
 /package_downloader/packages/
