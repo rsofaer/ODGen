@@ -28,6 +28,59 @@ class BasicTests(unittest.TestCase):
         self.opgen.test_module(options.input_file, vul_type='path_traversal')
         assert len(self.opgen.graph.detection_res['path_traversal']) != 0
 
+    def test_cclog(self):
+        options.vul_type = 'os_command'
+        sample_folder = "/home/raphael/workspace/RogueOneSamples/"
+        file_loc = "/30_backstabber_samples/conventional-changelog_1.1.12-->1.2.0/conventional-changelog-1.2.0/"
+        file_loc = sample_folder + file_loc
+
+        options.input_file = file_loc + "index.js"
+
+        self.opgen.get_new_graph(package_name=options.input_file)
+        self.opgen.test_module(options.input_file, vul_type='os_command')
+        assert(self.opgen.graph.graph)
+
+    def test_simplest_static(self):
+        options.vul_type = 'data_flow'
+        sample_folder = "/home/raphael/workspace/RogueOneSamples/"
+        file_loc = "synthetic_malicious/simplest/"
+        file_loc = sample_folder + file_loc
+
+        options.input_file = file_loc + "index.js"
+
+        self.opgen.get_new_graph(package_name=options.input_file)
+        self.opgen.test_module(options.input_file, vul_type=options.vul_type)
+        assert len(self.opgen.graph.detection_res[options.vul_type]) == 3
+    def test_deep_update(self):
+        options.vul_type = 'os_command'
+        sample_folder = "/home/raphael/workspace/RogueOneSamples/"
+        file_loc = "synthetic_malicious/eslint_loop/"
+        file_loc = sample_folder + file_loc
+
+        options.input_file = file_loc
+
+        self.opgen.get_new_graph(package_name=options.input_file)
+        self.opgen.test_module(options.input_file, vul_type=options.vul_type)
+        assert len(self.opgen.graph.detection_res[options.vul_type]) == 3
+    def test_eslint_scope(self):
+        options.vul_type = 'os_command'
+        sample_folder = "/home/raphael/workspace/RogueOneSamples/30_backstabber_samples/"
+        new = '3.7.2'
+        old = '4.0.0'
+        this_sample = f"eslint-scope_{old}-->{new}/"
+        file_loc = sample_folder + this_sample
+
+        results = []
+        for v in [old, new]:
+            opgen = OPGen()
+            options.input_file = file_loc + f"eslint-scope-{v}"
+            opgen.get_new_graph(package_name=options.input_file)
+            opgen.test_module(options.input_file, vul_type=options.vul_type)
+            results.append(opgen.graph.detection_res[options.vul_type])
+
+
+        assert len(self.opgen.graph.detection_res[options.vul_type]) == 3
+
     def test_typescript(self):
         """
         run the typescript version of sqlite and ws

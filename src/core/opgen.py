@@ -45,7 +45,7 @@ class OPGen:
         """
         vul_pathes = []
 
-        if vul_type in ['os_command', 'path_traversal', 'code_exec', 'xss']:
+        if vul_type in ['os_command', 'path_traversal', 'code_exec', 'xss', 'data_flow']:
             pathes = traceback(G, vul_type)
             vul_pathes = vul_checking(G, pathes[0], vul_type)
 

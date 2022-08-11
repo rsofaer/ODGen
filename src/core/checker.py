@@ -315,7 +315,9 @@ def vul_checking(G, pathes, vul_type):
             [('has_user_input', None), ('not_start_within_file', ['child_process.js']), ('not_exist_func', ['parseInt'])]
             #[('start_with_var', ['source_hqbpillvul_url']), ('not_start_within_file', ['child_process.js']), ('not_exist_func', sanitation_funcs)]
             ]
-
+    data_flow_rule_lists = [
+            [('not_start_within_file', ['child_process.js']), ('not_exist_func', ['parseInt'])]
+            ]
     code_exec_lists = [
             [('has_user_input', None), ('not_start_within_file', ['eval.js']), ('not_exist_func', ['parseInt'])],
             # include os command here
@@ -353,6 +355,7 @@ def vul_checking(G, pathes, vul_type):
             "code_exec": code_exec_lists,
             "proto_pollution": proto_pollution,
             "path_traversal": path_traversal,
+            "data_flow": data_flow_rule_lists,
             }
 
     output_rules = [
