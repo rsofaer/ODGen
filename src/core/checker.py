@@ -1,7 +1,7 @@
 import itertools
 import json
 import sys
-
+from timeit import default_timer as timer
 from .trace_rule import TraceRule
 from .vul_func_lists import Sinks
 from .logger import loggers
@@ -376,8 +376,10 @@ def vul_checking(G, pathes, vul_type):
 
     for rule_list in rule_lists:
         success_pathes += do_vul_checking(G, rule_list, pathes)
+    end = timer()
+    elapsed = (end - G.start_time)
     if options.json:
-        print_json_paths(G, success_pathes)
+        print_json_paths(G, success_pathes, {"elapsed_time_ms": elapsed*1000})
     else:
         print_success_pathes(G, success_pathes, color='green')
 
@@ -392,11 +394,14 @@ def vul_checking(G, pathes, vul_type):
             print_success_pathes(G, output_pathes, color='yellow')
     return success_pathes
 
-def print_json_paths(G, success_paths):
+def print_json_paths(G, success_paths, additional_params=None):
     node_set = set(itertools.chain(*success_paths))
-    result = {"paths": success_paths,
-              "nodes": dict([(node_id, G.get_node_attr(node_id)) for node_id in node_set])}
-    json.dump(result, sys.stdout)
+    if additional_params is None:
+        additional_params = {}
+    additional_params.update({"paths": success_paths,
+              "nodes": dict([(node_id, G.get_node_attr(node_id)) for node_id in node_set])})
+
+    json.dump(additional_params, sys.stdout)
     print("")
 
 

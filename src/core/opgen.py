@@ -319,7 +319,7 @@ class OPGen:
                     options.input_file))
 
         if len(self.graph.detection_res[options.vul_type]) == 0:
-            print(sty.fg.li_red + sty.ef.inverse +
+            loggers.print_logger.info(sty.fg.li_red + sty.ef.inverse +
                 f'{options.vul_type} not detected. Have you tried the "-ma" argument?\n' + 
                 "If it's a Node.js package, you can also try the '--nodejs -a' argument."
                 + sty.rs.all)

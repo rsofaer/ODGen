@@ -12,7 +12,7 @@ from .logger import *
 import uuid
 from itertools import chain
 from collections import defaultdict, deque
-
+from timeit import default_timer as timer
 class Graph:
 
     def __init__(self):
@@ -118,6 +118,9 @@ class Graph:
             doublequote = False
             escapechar = '\\'
         self.csv_dialect = joern_dialect
+
+        # For timing total run time
+        self.start_time = timer()
 
     # Basic graph operations
     # node
