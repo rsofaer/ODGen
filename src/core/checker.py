@@ -1,3 +1,7 @@
+import itertools
+import json
+import sys
+
 from .trace_rule import TraceRule
 from .vul_func_lists import Sinks
 from .logger import loggers
@@ -35,7 +39,7 @@ def get_path_text(G, path, caller=None):
         try:
             content = G.get_node_file_content(node)
         except Exception as e:
-            print(e)
+            loggers.print_logger.error(e)
 
         if cur_node_attr['type'] == 'object' and len(cur_node_attr['code'].strip()) != 0:
             cur_path_str2 += "{}\n".format(cur_node_attr['code'])
@@ -197,11 +201,11 @@ def old_extend_ast_list(G, ast_list):
             for n in oto:
                 if n not in ast_tainted_objs:
                     valid = False
-                print(n, valid)
+                loggers.print_logger.info(n, valid)
             if valid:
                 obj_tainted_objs += oto
 
-    print("tainted objs", obj_tainted_objs)
+    loggers.print_logger.info("tainted objs", obj_tainted_objs)
 
     # tainted_obj should already in order
     # re-sort to make sure
@@ -248,7 +252,7 @@ def traceback(G, vul_type, start_node=None):
 
     sink_funcs = Sinks()
     expoit_func_list = sink_funcs.get_sinks_by_vul_type(vul_type)
-    print("Sink functions:", expoit_func_list)
+    loggers.print_logger.info(f"Sink functions: {expoit_func_list}")
 
     func_nodes = G.get_node_by_attr('type', 'AST_METHOD_CALL')
     func_nodes += G.get_node_by_attr('type', 'AST_CALL')
@@ -365,25 +369,36 @@ def vul_checking(G, pathes, vul_type):
 
     rule_lists = vul_type_map[vul_type]
     success_pathes = []
-    print('vul_checking', vul_type)
+    loggers.print_logger.info(f"vul_checking {vul_type}")
     for path in pathes:
         res_text_path = get_path_text(G, path, path[0])
         loggers.main_logger.info(res_text_path)
 
     for rule_list in rule_lists:
         success_pathes += do_vul_checking(G, rule_list, pathes)
-    print_success_pathes(G, success_pathes, color='green')
+    if options.json:
+        print_json_paths(G, success_pathes)
+    else:
+        print_success_pathes(G, success_pathes, color='green')
 
-    if options.print_all_pathes:
-        output_pathes = []
-        for rule_list in output_rules:
-            output_path = do_vul_checking(G, rule_list, pathes)
-            for op in output_path:
-                if op not in success_pathes and op not in output_pathes:
-                    output_pathes.append(op)
+        if options.print_all_pathes:
+            output_pathes = []
+            for rule_list in output_rules:
+                output_path = do_vul_checking(G, rule_list, pathes)
+                for op in output_path:
+                    if op not in success_pathes and op not in output_pathes:
+                        output_pathes.append(op)
 
-        print_success_pathes(G, output_pathes, color='yellow')
+            print_success_pathes(G, output_pathes, color='yellow')
     return success_pathes
+
+def print_json_paths(G, success_paths):
+    node_set = set(itertools.chain(*success_paths))
+    result = {"paths": success_paths,
+              "nodes": dict([(node_id, G.get_node_attr(node_id)) for node_id in node_set])}
+    json.dump(result, sys.stdout)
+    print("")
+
 
 def print_success_pathes(G, success_pathes, color=None):
     # for now, the success_pathes should be obj-edf edges

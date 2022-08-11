@@ -60,7 +60,7 @@ def run_toplevel_file(G: Graph, node_id):
     if options.max_file_stack is not None:
         if len(G.file_stack) > options.max_file_stack + 1:
             return []
-    print(G.file_stack)
+    loggers.print_logger.info(G.file_stack)
     previous_file_path = G.cur_file_path
     G.cur_file_path = file_path
     if G.entry_file_path is None:

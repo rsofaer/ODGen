@@ -308,7 +308,7 @@ def set_entrance_func():
         return 'Function not set'
     
     options.entrance_func = data['func']
-    print(options.entrance_func)
+    loggers.print_logger.info(options.entrance_func)
     
     if not hasattr(options, 'entrance_func_location'):
         options.entrance_func_location = []

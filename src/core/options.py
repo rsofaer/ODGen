@@ -58,6 +58,7 @@ def parse_args():
         help="Source code file (or directory) to generate object graph for. "
         "Use '-' to get source code from stdin. Ignore this argument to "
         "analyze ./nodes.csv and ./rels.csv.")
+    parser.add_argument('--json', default=False, action='store_true', help="Suppress all output other than a JSON representation of the result.")
     args = parser.parse_args()
     if args.vul_type == 'prototype_pollution':
         args.vul_type = 'proto_pollution'

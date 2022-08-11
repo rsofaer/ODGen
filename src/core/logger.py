@@ -74,8 +74,10 @@ class Loggers:
                 self.main_logger = create_logger("main", output_type='console')
             else:
                 self.main_logger = create_logger("main", file_name=os.path.join(base_location, 'main.log'))
-
-            self.print_logger = create_logger("print", output_type='console')
+            if options.json:
+                self.print_logger = create_logger("print", file_name=os.path.join(base_location, 'print.log'))
+            else:
+                self.print_logger = create_logger("print", output_type='console')
             self.debug_logger = create_logger("debug", file_name=os.path.join(base_location,"debug.log"))
             self.progress_logger = create_logger("progress", file_name=os.path.join(base_location,"progress.log"))
             self.error_logger = create_logger("error", file_name=os.path.join(base_location,"error.log"))

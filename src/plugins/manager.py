@@ -156,7 +156,7 @@ class PluginManager(object):
 
     def __init__(self, G=None, init=False):
        if not PluginManager.instance or init:
-           print("new instance")
+           loggers.print_logger.info("new instance")
            PluginManager.instance = PluginManager.__PluginManager(G)
     def __getattr__(self, val):
         return getattr(self.instance, val)

@@ -112,7 +112,7 @@ class OPGen:
         Returns:
             list: the test result pathes of the module
         """
-        print("Testing {} {}".format(vul_type, module_path))
+        loggers.print_logger.info("Testing {} {}".format(vul_type, module_path))
         if module_path is None:
             print(sty.fg.li_red + sty.ef.inverse +
                 "[ERROR] {} not found".format(module_path)
@@ -308,7 +308,7 @@ class OPGen:
                 self.test_file(options.input_file, options.vul_type, self.graph, timeout_s=timeout_s)
 
             if len(self.graph.detection_res[options.vul_type]) != 0:
-                print(sty.fg.li_green + sty.ef.inverse +
+                loggers.print_logger.info(sty.fg.li_green + sty.ef.inverse +
                     f'{options.vul_type} detected at {options.input_file}'
                     + sty.rs.all)
                 loggers.succ_logger.info("{} is detected in {}".format(
@@ -323,8 +323,9 @@ class OPGen:
                 f'{options.vul_type} not detected. Have you tried the "-ma" argument?\n' + 
                 "If it's a Node.js package, you can also try the '--nodejs -a' argument."
                 + sty.rs.all)
-        print("Graph size: {}, GC removed {} nodes".format(self.graph.get_graph_size(), self.graph.num_removed))
-        print("Cleaning up tmp dirs")
+
+        loggers.print_logger.info("Graph size: {}, GC removed {} nodes".format(self.graph.get_graph_size(), self.graph.num_removed))
+        loggers.print_logger.info("Cleaning up tmp dirs")
         #shutil.rmtree(options.run_env)
         #export to csv
         if options.export is not None:
@@ -436,7 +437,7 @@ def start_from_func(G, module_path, vul_type='proto_pollution'):
                     #call_function(G, cur_obj_nodes, mark_fake_args=True)
     # we need to check the vuls
 
-    print(G.detection_res)
+    loggers.print_logger.info(G.detection_res)
     return G.detection_res[vul_type]
 
 def generate_obj_graph(G, internal_plugins, entry_nodeid='0', OPGen=None):
