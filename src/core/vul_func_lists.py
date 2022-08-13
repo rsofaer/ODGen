@@ -39,7 +39,7 @@ class Sinks:
                 'sink_hqbpillvul_code_execution',
                 'sink_hqbpillvul_exec'
                 ],
-            'data_flow': ['clone', 'sink_hqbpillvul_http_write', 'sink_hqbpillvul_db', 'sink_hqbpillvul_exec', 'sink_hqbpillvul_execSync', 'extend', 'sink_hqbpillvul_spawnSync', 'Function', 'sink_hqbpillvul_execFile', 'eval', 'sink_hqbpillvul_pp', 'sink_hqbpillvul_code_execution', 'merge', 'parse', 'pipe', 'sink_hqbpillvul_eval',  'sink_hqbpillvul_http_setHeader', 'sink_hqbpillvul_http_sendFile', 'sink_hqbpillvul_spawn']
+            'data_flow': ['sink_hqbpillvul_http_write', 'sink_hqbpillvul_db', 'sink_hqbpillvul_exec', 'sink_hqbpillvul_execSync', 'extend', 'sink_hqbpillvul_spawnSync', 'Function', 'sink_hqbpillvul_execFile', 'eval', 'sink_hqbpillvul_pp', 'sink_hqbpillvul_code_execution', 'merge', 'pipe', 'sink_hqbpillvul_eval',  'sink_hqbpillvul_http_setHeader', 'sink_hqbpillvul_http_sendFile', 'sink_hqbpillvul_spawn']
 
     }
 
