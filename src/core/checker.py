@@ -399,7 +399,10 @@ def print_json_paths(G, success_paths, additional_params=None):
     if additional_params is None:
         additional_params = {}
     additional_params.update({"paths": success_paths,
-              "nodes": dict([(node_id, G.get_node_attr(node_id)) for node_id in node_set])})
+              "nodes": dict([(node_id, G.get_node_attr(node_id)) for node_id in node_set]),
+              "num_nodes": G.graph.number_of_nodes(),
+                "num_edges": G.graph.number_of_edges(),
+                              })
 
     json.dump(additional_params, sys.stdout)
     print("")
